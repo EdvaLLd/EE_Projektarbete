@@ -35,6 +35,10 @@ public class CustomUserDetails implements UserDetails {
         return Collections.unmodifiableSet(authorities); // Make List 'final' through 'unmodifiable'
     }
 
+    public CustomUser getCustomUser() {
+        return customUser;
+    }
+
     @Override
     public String getPassword() {
         return customUser.getPassword();

@@ -16,6 +16,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         this.customUserRepository = customUserRepository;
     }
 
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
@@ -24,8 +25,6 @@ public class CustomUserDetailsService implements UserDetailsService {
                         () -> new UsernameNotFoundException("User with username " + username + " Was not found")
                 );
 
-        // TODO - Possibility for MAPPING instead of Pushing an Entity within UserDetails
-
-        return new CustomUserDetails(customUser); // CustomUserDetails contains an Entity
+        return new CustomUserDetails(customUser);
     }
 }

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.Set;
 
+//kopplar sökadressen till sin html-sida (ex /register till register.html)
 @Controller
 public class ViewController {
 
@@ -67,7 +68,6 @@ public class ViewController {
         return "registerpage";
     }
 
-    // Handles Business Logic - coming from SUBMIT FORM
     @PostMapping("/register")
     public String registerUser(
             @Valid RegisterUserDTO registerUserDTO, BindingResult bindingResult

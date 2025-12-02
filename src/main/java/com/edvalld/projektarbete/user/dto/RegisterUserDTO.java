@@ -4,9 +4,15 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
+//behövdes för att registrera användare
 public record RegisterUserDTO(
-        @NotBlank @Size(min = 2, max = 25) String username,
-        @NotBlank @Size(max=80) @Pattern(
+        @NotBlank
+        @Size(min = 2, max = 25)
+        String username,
+
+        @NotBlank
+        @Size(max=80)
+        @Pattern(
                 regexp = "^" +
                         "(?=.*[a-z])" +        // at least one lowercase letter
                         "(?=.*[A-Z])" +        // at least one uppercase letter

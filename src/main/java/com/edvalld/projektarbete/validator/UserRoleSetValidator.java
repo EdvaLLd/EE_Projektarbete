@@ -10,6 +10,7 @@ import java.util.Set;
 
 public class UserRoleSetValidator implements ConstraintValidator<ValidRoles, Set<UserRole>> {
 
+    //dessa behöver matcha rollerna som finns
     private static final Set<UserRole> ALLOWED = Set.of(UserRole.GUEST, UserRole.USER, UserRole.ADMIN);
 
     @Override
