@@ -9,6 +9,7 @@ import io.jsonwebtoken.security.Keys;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -24,13 +25,14 @@ import java.util.stream.Collectors;
 public class JwtUtils {
     private static final Logger logger = LoggerFactory.getLogger (JwtUtils .class);
 
-    //@Value("${BASE64_SECRET_KEY}")
-    private final String base64EncodedSecretKey = "nQSOuRhdgmQlKuioG5uJkzAegqGHqMGAoDtYtZS3u3ApHXfvrdvPF0Mc0IOnu8yL3W77Rxctu4zF" ;
-    private final byte[] keyBytes =
-            Base64.getDecoder ().decode(base64EncodedSecretKey );
-    private final SecretKey key = Keys.hmacShaKeyFor(keyBytes );
+    private final SecretKey key;
     // JWT expiration time (1 hour)
     private final int jwtExpirationMs = (int) TimeUnit.HOURS.toMillis (1);
+
+    public JwtUtils(@Value("${base64.secret.key}")String base64EncodedSecretKey) {
+        byte[] keyBytes = Base64.getDecoder ().decode(base64EncodedSecretKey );
+        key = Keys.hmacShaKeyFor(keyBytes );
+    }
 
     public String generateJwtToken (CustomUser customUser ) {
         logger.debug("Generating JWT for user: {} with roles: {}" ,

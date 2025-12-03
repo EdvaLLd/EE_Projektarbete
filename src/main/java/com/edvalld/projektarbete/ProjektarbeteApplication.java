@@ -18,25 +18,7 @@ public class ProjektarbeteApplication {
 		SpringApplication.run(ProjektarbeteApplication.class, args);
 
 
-		CustomUser benny = new CustomUser(
-				"TESTUSER",
-				"",
-				true,
-				true,
-				true,
-				true,
-				Set.of(UserRole.USER, UserRole.ADMIN)
-		);
-		CustomUserDetails customUserDetails = new CustomUserDetails(benny);
-		System.out.println("getAuthorities: " + customUserDetails.getAuthorities());
-		JwtUtils jwtUtils = new JwtUtils();
-		// Generate the token
-		String token = jwtUtils.generateJwtToken(benny);
-		System.out.println("Generated JWT:\n" + token);
-		// Extract the roles
-		Set<UserRole> extractedRoles = jwtUtils.getRolesFromJwtToken(token);
-		System.out.println("Extracted roles: " + extractedRoles);
-		System.out.println("Extracted username: " + jwtUtils.getUsernameFromJwtToken(token));
+
 
 	}
 

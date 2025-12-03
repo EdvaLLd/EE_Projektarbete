@@ -1,9 +1,12 @@
 package com.edvalld.projektarbete.user;
 
+import com.edvalld.projektarbete.task.CustomTask;
 import com.edvalld.projektarbete.user.authority.UserRole;
 import jakarta.persistence.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -34,6 +37,9 @@ public class CustomUser {
     @ElementCollection(targetClass = UserRole.class, fetch = FetchType.EAGER) // Fetch Immediately
     @Enumerated(value = EnumType.STRING)
     private Set<UserRole> roles;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CustomTask> tasks = new ArrayList<>();
 
     // Constructors
     public CustomUser() {}

@@ -7,7 +7,18 @@
 <body>
 
 <h1>Admin Page</h1>
-<p>This is a secret page</p>
+<a th:href="@{/}">Back to overview </a>
+
+<ul>
+  <li th:each="user : ${users}">
+    <p th:text="'User id: ' + ${user.getId()}"></p>
+    <p th:text="'Username: ' + ${user.getUsername()}"></p>
+    <form th:action="@{/removeUser(userId=${user.getId()})}" method="post">
+      <input type="hidden" name="_method" value="delete" />
+      <button type="submit">Delete</button>
+    </form>
+  </li>
+</ul>
 
 </body>
 </html>

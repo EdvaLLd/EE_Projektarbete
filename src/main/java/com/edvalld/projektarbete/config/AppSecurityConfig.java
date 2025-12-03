@@ -2,6 +2,7 @@ package com.edvalld.projektarbete.config;
 
 import com.edvalld.projektarbete.security.jwt.JwtAuthenticationFilter;
 import com.edvalld.projektarbete.user.authority.UserRole;
+import jakarta.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +12,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -58,9 +60,23 @@ public class AppSecurityConfig {
                         // .requestMatchers() // TODO - check against specific HTTP METHOD
                         .requestMatchers("/", "/register", "/static/**", "/login").permitAll()  // Allow localhost:8080/
                         .requestMatchers("/debug/**").permitAll()                     // RestController for Debugging
-                        .requestMatchers("/admin", "/tools").hasRole("ADMIN")
-                        .requestMatchers("/user").hasRole(UserRole.USER.name())
+                        .requestMatchers("/admin", "/tools", "/removeUser").hasRole(UserRole.ADMIN.name())
+                        .requestMatchers("/user", "/tasks").hasRole(UserRole.USER.name())
                         .anyRequest().authenticated() // MUST exist AFTER matchers, TODO - Is this true by DEFAULT?
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessHandler((request, response, authentication) -> {
+                            Cookie cookie = new Cookie("authToken", null);
+                            cookie.setPath("/");
+                            cookie.setMaxAge(0);
+                            cookie.setHttpOnly(true);
+                            response.addCookie(cookie);
+
+                            SecurityContextHolder.clearContext();
+
+                            response.sendRedirect("/login?logout");
+                        })
                 )
 
                 // TODO - If you want (optional), insert configure logic here for CORS

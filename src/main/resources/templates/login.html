@@ -8,9 +8,9 @@
 </head>
 
 <body class="bg-gray-100 min-h-screen flex items-center justify-center">
-
+<a th:href="@{/}">Back to overview </a>
 <!-- Must match appSecurityConfig, loginProcessingUrl -->
-<form th:action="@{/authenticate}" method="post"
+<form id="login-form" th:action="@{/login}" method="post"
       class="bg-white p-8 rounded-2xl shadow-md w-full max-w-md space-y-5">
 
     <h2 class="text-2xl font-bold text-center text-gray-800">Sign in</h2>
@@ -64,4 +64,35 @@
 </form>
 
 </body>
+<script>
+    document.getElementById("login-form").addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+
+        try {
+            const response = await fetch("/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: 'include',
+                body: JSON.stringify({ username, password })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log("Login success:", data);
+
+                window.location.href = "/";
+            } else {
+                window.location.href = "/login?error";
+            }
+        } catch (err) {
+            console.error("Login error:", err);
+            alert("Unexpected login error");
+        }
+    });
+</script>
 </html>

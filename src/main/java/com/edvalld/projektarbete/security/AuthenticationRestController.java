@@ -37,6 +37,8 @@ public class AuthenticationRestController {
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(
             @RequestBody RegisterUserDTO customUserLoginDTO,     // TODO - Sanitizing Input
+            //@RequestParam String username,
+            //@RequestParam String password,
             HttpServletResponse response
     ) {
         logger.debug("Attempting authentication for user: {}", customUserLoginDTO.username());

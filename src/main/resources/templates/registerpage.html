@@ -8,7 +8,7 @@
 <body>
 
 <h1>Register new user</h1>
-
+<a th:href="@{/}">Back to overview </a>
 <!-- th:action replaces action -->
 <form th:action="@{/register}" th:object="${registerUserDTO}" method="post">
   <label>
@@ -19,6 +19,11 @@
   <label>
     Password
     <input type="password" name="password" th:field="*{password}">
+  </label>
+
+  <label>
+    Password to create admin user
+    <input type="password" name="adminPass" th:field="*{adminPass}">
   </label>
 
   <button type="submit">Register</button>
