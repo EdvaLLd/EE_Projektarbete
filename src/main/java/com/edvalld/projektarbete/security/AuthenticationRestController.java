@@ -8,6 +8,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -79,13 +81,15 @@ public class AuthenticationRestController {
         // Step 3: Generate JWT using your domain model (now includes roles)
         String token = jwtUtils.generateJwtToken(customUserDetails.getCustomUser());
 
-        // Step 4: Set cookie
-        Cookie cookie = new Cookie("authToken", token);
-        cookie.setHttpOnly(true);
-        cookie.setSecure(false); // ✅ change to true in production (HTTPS only)
-        cookie.setPath("/");
-        cookie.setMaxAge(3600); // 1 hour
-        response.addCookie(cookie);
+        ResponseCookie cookie = ResponseCookie.from("authToken", token)
+                .httpOnly(true)
+                .secure(false)  // Sätt till true i produktion
+                .path("/")
+                .maxAge(3600)
+                .sameSite("Strict")  // SameSite-skydd
+                .build();
+
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
         logger.info("Authentication successful for user: {}", customUserLoginDTO.username());
 
